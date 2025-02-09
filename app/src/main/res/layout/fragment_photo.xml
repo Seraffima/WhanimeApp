@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="?android:attr/colorBackground"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/button_paste_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Paste Image"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/button_select_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Select Image"/>
+</LinearLayout>
