@@ -7,15 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 import com.bumptech.glide.Glide;
 import com.example.whanime.R;
+import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
-
     private List<SearchItem> searchItems;
-    private OnItemClickListener onItemClickListener;
+    private final OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
         void onItemClick(SearchItem item);
@@ -36,12 +34,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SearchItem item = searchItems.get(position);
-        Glide.with(holder.itemView.getContext())
-                .load(item.getImageUrl())
-                .into(holder.itemImage);
-        holder.itemMainTitle.setText(item.getMainTitle());
-        holder.itemSubTitle.setText(item.getSubTitle());
-        holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(item));
+        holder.bind(item, onItemClickListener);
     }
 
     @Override
@@ -49,16 +42,40 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return searchItems.size();
     }
 
+    public void setSearchItems(List<SearchItem> searchItems) {
+        this.searchItems = searchItems;
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(SearchItem item) {
+        int position = searchItems.indexOf(item);
+        if (position != -1) {
+            searchItems.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    public SearchItem getSearchItemAtPosition(int position) {
+        return searchItems.get(position);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView itemImage;
-        TextView itemMainTitle;
-        TextView itemSubTitle;
+        private final ImageView imageView;
+        private final TextView filenameTextView;
+        private final TextView episodeTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemImage = itemView.findViewById(R.id.item_image);
-            itemMainTitle = itemView.findViewById(R.id.item_main_title);
-            itemSubTitle = itemView.findViewById(R.id.item_sub_title);
+            imageView = itemView.findViewById(R.id.item_image);
+            filenameTextView = itemView.findViewById(R.id.item_main_title);
+            episodeTextView = itemView.findViewById(R.id.item_sub_title);
+        }
+
+        public void bind(SearchItem item, OnItemClickListener onItemClickListener) {
+            Glide.with(itemView.getContext()).load(item.getImage()).into(imageView);
+            filenameTextView.setText(item.getName());
+            episodeTextView.setText(item.getEpisode());
+            itemView.setOnClickListener(v -> onItemClickListener.onItemClick(item));
         }
     }
 }

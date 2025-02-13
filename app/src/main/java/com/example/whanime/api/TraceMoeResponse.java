@@ -7,7 +7,7 @@ public class TraceMoeResponse {
 
     public static class Result {
         public String filename;
-        public int episode;
+        public String episode; // Change to String to handle various formats
         public String image;
     }
 }
