@@ -26,7 +26,7 @@ public class SearchItemRepository {
             public void onResponse(Call<TraceMoeResponse> call, Response<TraceMoeResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     TraceMoeResponse.Result result = response.body().result.get(0);
-                    SearchItem searchItem = new SearchItem(result.image, result.filename, "Episode: " + result.episode);
+                    SearchItem searchItem = new SearchItem(result.image, result.anilist.title.toString(), "Episode: " + result.episode, result.video);
                     databaseOperations.insertSearchItem(searchItem);
                 } else {
                     Log.e("API_ERROR", "Response unsuccessful or empty");

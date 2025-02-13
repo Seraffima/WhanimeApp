@@ -8,7 +8,7 @@ import com.example.whanime.ui.search.SearchItem;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {SearchItem.class}, version = 2)
+@Database(entities = {SearchItem.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract SearchItemDAO searchItemDAO();
 

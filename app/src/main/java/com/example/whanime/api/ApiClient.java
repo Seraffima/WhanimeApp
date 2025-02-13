@@ -7,12 +7,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static final String BASE_URL = "https://api.trace.moe";
-    private static Retrofit retrofit;
+    private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
         if (retrofit == null) {
             Gson gson = new GsonBuilder()
                     .registerTypeAdapter(String.class, new EpisodeDeserializer())
+                    .registerTypeAdapter(TraceMoeResponse.Result.Anilist.class, new AnilistDeserializer())
                     .create();
 
             retrofit = new Retrofit.Builder()

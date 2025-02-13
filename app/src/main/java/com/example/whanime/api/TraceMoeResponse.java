@@ -7,7 +7,17 @@ public class TraceMoeResponse {
 
     public static class Result {
         public String filename;
-        public String episode; // Change to String to handle various formats
+        public String episode;
         public String image;
+        public String video;
+        public Anilist anilist;
+
+        public static class Anilist {
+            public Title title;
+
+            public static class Title {
+                public String romaji;
+            }
+        }
     }
 }

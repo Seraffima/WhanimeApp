@@ -14,20 +14,24 @@ public class SearchItem implements Parcelable {
     public String filename;
     public String episode;
 
+    public String video;
+
     // Public constructor matching the fields
-    public SearchItem(int id, String image, String filename, String episode) {
+    public SearchItem(int id, String image, String filename, String episode, String video) {
         this.id = id;
         this.image = image;
         this.filename = filename;
         this.episode = episode;
+        this.video = video;
     }
 
     // New constructor without id
     @Ignore
-    public SearchItem(String image, String filename, String episode) {
+    public SearchItem(String image, String filename, String episode, String video) {
         this.image = image;
         this.filename = filename;
         this.episode = episode;
+        this.video = video;
     }
 
     // Parcelable implementation
@@ -36,6 +40,7 @@ public class SearchItem implements Parcelable {
         image = in.readString();
         filename = in.readString();
         episode = in.readString();
+        video = in.readString();
     }
 
     public static final Creator<SearchItem> CREATOR = new Creator<SearchItem>() {
@@ -61,6 +66,7 @@ public class SearchItem implements Parcelable {
         dest.writeString(image);
         dest.writeString(filename);
         dest.writeString(episode);
+        dest.writeString(video);
     }
 
     //getters and setters
@@ -76,4 +82,5 @@ public class SearchItem implements Parcelable {
     public String getEpisode() {
         return episode;
     }
+    public String getVideo() {return video;}
 }

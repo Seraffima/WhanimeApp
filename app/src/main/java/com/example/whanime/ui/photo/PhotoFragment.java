@@ -16,16 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-
 import com.example.whanime.R;
 import com.example.whanime.api.TraceMoeApi;
 import com.example.whanime.api.TraceMoeResponse;
 import com.example.whanime.api.ApiClient;
 import com.example.whanime.ui.search.SearchItem;
 import com.example.whanime.ui.search.SearchViewModel;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -92,14 +88,8 @@ public class PhotoFragment extends Fragment {
                 @Override
                 public void onResponse(Call<TraceMoeResponse> call, Response<TraceMoeResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        TraceMoeResponse.Result result = response.body().result.get(0);
-                        Toast.makeText(getActivity(), "Image uploaded: " + result.filename, Toast.LENGTH_SHORT).show();
-
-                        // Create a new SearchItem
-                        SearchItem newItem = new SearchItem(result.image, result.filename, result.episode);
-
-                        // Save the new SearchItem to the database
-                        searchViewModel.insert(newItem);
+                        String imageUrl = response.body().result.get(0).image;
+                        searchAnimeWithAniList(imageUrl);
                     } else {
                         Toast.makeText(getActivity(), "Upload failed", Toast.LENGTH_SHORT).show();
                     }
@@ -114,5 +104,37 @@ public class PhotoFragment extends Fragment {
         } catch (Exception e) {
             Toast.makeText(getActivity(), "File error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void searchAnimeWithAniList(String imageUrl) {
+        traceMoeApi.searchAnimeWithAniList(imageUrl).enqueue(new Callback<TraceMoeResponse>() {
+            @Override
+            public void onResponse(Call<TraceMoeResponse> call, Response<TraceMoeResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    TraceMoeResponse.Result result = response.body().result.get(0);
+                    if (result.anilist != null && result.anilist.title != null) {
+                        String romajiTitle = result.anilist.title.romaji;
+                        String videoUrl = result.video;
+                        Toast.makeText(getActivity(), "Image uploaded: " + romajiTitle, Toast.LENGTH_SHORT).show();
+
+                        // Create a new SearchItem
+                        SearchItem newItem = new SearchItem(result.image, romajiTitle, result.episode, videoUrl);
+
+                        // Save the new SearchItem to the database
+                        searchViewModel.insert(newItem);
+                    } else {
+                        Toast.makeText(getActivity(), "Anime information not found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Search failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TraceMoeResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "Search error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("API_ERROR", t.getMessage(), t);
+            }
+        });
     }
 }
