@@ -1,19 +1,39 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="?android:attr/colorBackground"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_select_image"
-        android:layout_width= "match_parent"
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:backgroundTint="?android:attr/colorBackground"
-        android:text="Select Image"
-        android:textSize="26sp"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="@color/colorAccent"/>
-</LinearLayout>
+        android:scaleType="centerCrop"
+        android:src="@drawable/wallpaper_night" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="150sp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/instruction_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap the button to select your image"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@android:color/white"/>
+
+        <ImageButton
+            android:id="@+id/select_image_button"
+            android:layout_width="300sp"
+            android:layout_height="300sp"
+            android:src="@drawable/main_button_design"
+            android:scaleType="fitCenter"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/select_image"/>
+    </LinearLayout>
+</FrameLayout>

@@ -5,22 +5,16 @@
     app:startDestination="@+id/navigation_photo">
 
     <fragment
-        android:id="@+id/navigation_photo"
-        android:name="com.example.whanime.ui.photo.PhotoFragment"
-        android:label="@string/title_photo"
-        tools:layout="@layout/fragment_photo" />
-
-    <fragment
         android:id="@+id/navigation_search"
         android:name="com.example.whanime.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_user"
-        android:name="com.example.whanime.ui.user.UserFragment"
-        android:label="@string/title_user"
-        tools:layout="@layout/fragment_user" />
+        android:id="@+id/navigation_photo"
+        android:name="com.example.whanime.ui.photo.PhotoFragment"
+        android:label="@string/title_photo"
+        tools:layout="@layout/fragment_photo" />
 
     <fragment
         android:id="@+id/navigation_settings"

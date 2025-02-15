@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -45,7 +45,8 @@ public class PhotoFragment extends Fragment {
 
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
-        Button buttonSelectImage = view.findViewById(R.id.button_select_image);
+
+        ImageButton buttonSelectImage = view.findViewById(R.id.select_image_button);
         buttonSelectImage.setOnClickListener(v -> selectImageFromGallery());
 
         pickImageLauncher = registerForActivityResult(

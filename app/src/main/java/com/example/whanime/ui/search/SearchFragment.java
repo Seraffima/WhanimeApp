@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,6 +22,7 @@ public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private SearchAdapter searchAdapter;
     private SearchViewModel searchViewModel;
+    private SearchView searchView;
 
     @Nullable
     @Override
@@ -40,6 +42,21 @@ public class SearchFragment extends Fragment {
             @Override
             public void onChanged(List<SearchItem> items) {
                 searchAdapter.setSearchItems(items);
+            }
+        });
+
+        searchView = view.findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchAdapter.filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchAdapter.filter(newText);
+                return false;
             }
         });
 

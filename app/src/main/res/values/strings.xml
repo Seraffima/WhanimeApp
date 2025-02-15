@@ -7,4 +7,5 @@
     <string name="title_search">Search</string>
     <string name="title_user">User</string>
     <string name="image_desc">Image Description</string>
+    <string name="select_image">Select Image</string>
 </resources>
