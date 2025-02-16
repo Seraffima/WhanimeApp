@@ -16,15 +16,18 @@ import com.example.whanime.R;
 import java.util.ArrayList;
 import java.util.List;
 
+// Adaptador para mostrar los elementos de búsqueda en un RecyclerView
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
-    private List<SearchItem> searchItems;
-    private List<SearchItem> searchItemsFull;
-    private final OnItemClickListener onItemClickListener;
+    private List<SearchItem> searchItems; // Lista de elementos de búsqueda
+    private List<SearchItem> searchItemsFull; // Lista completa de elementos de búsqueda
+    private final OnItemClickListener onItemClickListener; // Interfaz para manejar clics en los elementos
 
+    // Interfaz para manejar clics en los elementos
     public interface OnItemClickListener {
         void onItemClick(SearchItem item);
     }
 
+    // Constructor del adaptador
     public SearchAdapter(List<SearchItem> searchItems, OnItemClickListener onItemClickListener) {
         this.searchItems = new ArrayList<>(searchItems);
         this.searchItemsFull = new ArrayList<>(searchItems);
@@ -49,12 +52,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return searchItems.size();
     }
 
+    // Método para establecer los elementos de búsqueda
     public void setSearchItems(List<SearchItem> searchItems) {
         this.searchItems = new ArrayList<>(searchItems);
         this.searchItemsFull = new ArrayList<>(searchItems);
         notifyDataSetChanged();
     }
 
+    // Método para eliminar un elemento de búsqueda
     public void removeItem(SearchItem item) {
         int position = searchItems.indexOf(item);
         if (position != -1) {
@@ -63,10 +68,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
     }
 
+    // Método para obtener un elemento de búsqueda en una posición específica
     public SearchItem getSearchItemAtPosition(int position) {
         return searchItems.get(position);
     }
 
+    // Método para filtrar los elementos de búsqueda
     public void filter(String text) {
         List<SearchItem> filteredList = new ArrayList<>();
         if (text.isEmpty()) {
@@ -84,6 +91,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
+    // ViewHolder para los elementos de búsqueda
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
         private final TextView filenameTextView;
@@ -96,6 +104,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             episodeTextView = itemView.findViewById(R.id.item_sub_title);
         }
 
+        // Método para enlazar un elemento de búsqueda con el ViewHolder
         public void bind(SearchItem item, OnItemClickListener onItemClickListener) {
             Glide.with(itemView.getContext()).load(item.getImage()).into(imageView);
             filenameTextView.setText(item.getName());
@@ -106,9 +115,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             });
         }
 
+        // Metodo para mostrar un diálogo con los detalles del anime
         private void showAlertDialog(SearchItem item) {
             AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-            builder.setTitle("Anime Details");
+            builder.setTitle(R.string.anime_details); // Use string resource for the title
 
             LinearLayout layout = new LinearLayout(itemView.getContext());
             layout.setOrientation(LinearLayout.VERTICAL);
@@ -128,12 +138,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     .into(imageView); // Use ImageView directly
 
             TextView nameTextView = new TextView(itemView.getContext());
-            nameTextView.setText("Name: " + item.getName());
+            nameTextView.setText(itemView.getContext().getString(R.string.name, item.getName())); // Use string resource for the name
             nameTextView.setTextSize(18);
             nameTextView.setPadding(10, 10, 10, 10);
 
             TextView episodeTextView = new TextView(itemView.getContext());
-            episodeTextView.setText("Episode: " + item.getEpisode());
+            episodeTextView.setText(itemView.getContext().getString(R.string.episode, item.getEpisode())); // Use string resource for the episode
             episodeTextView.setTextSize(18);
             episodeTextView.setPadding(10, 10, 10, 10);
 
@@ -145,7 +155,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             scrollView.addView(layout);
 
             builder.setView(scrollView);
-            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss()); // Use string resource for the button
 
             AlertDialog dialog = builder.create();
             dialog.show();

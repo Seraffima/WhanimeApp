@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Moe-vile</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_dashboard">Tablero</string>
+    <string name="title_notifications">Notificaciones</string>
+    <string name="title_photo">Imagenes</string>
+    <string name="title_search">Buscar</string>
+    <string name="title_user">Usuario</string>
+    <string name="image_desc">Descripción de la imagen</string>
+    <string name="select_image">Seleccionar imagen</string>
+    <string name="main_button_help">Presiona el botón para seleccionar tu imagen</string>
+    <string name="dark_mode">Modo Oscuro</string>
+    <string name="text_size">Tamaño del texto</string>
+    <string name="select_language">Seleccionar Lenguaje</string>
+    <string name="anime_details">Detalles del Anime</string>
+    <string name="name">Nombre: %1$s</string>
+    <string name="episode">Episodio: %1$s</string>
+    <string name="ok">Aceptar</string>
+</resources>

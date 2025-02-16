@@ -6,15 +6,15 @@ import androidx.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+// Entity class representing a search item in the database
 @Entity(tableName = "search_items")
 public class SearchItem implements Parcelable {
     @PrimaryKey(autoGenerate = true)
-    public int id;
-    public String image;
-    public String filename;
-    public String episode;
-
-    public String video;
+    public int id; // Primary key for the entity
+    public String image; // URL of the image
+    public String filename; // Name of the file
+    public String episode; // Episode information
+    public String video; // URL of the video
 
     // Public constructor matching the fields
     public SearchItem(int id, String image, String filename, String episode, String video) {
@@ -69,7 +69,7 @@ public class SearchItem implements Parcelable {
         dest.writeString(video);
     }
 
-    //getters and setters
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -82,5 +82,7 @@ public class SearchItem implements Parcelable {
     public String getEpisode() {
         return episode;
     }
-    public String getVideo() {return video;}
+    public String getVideo() {
+        return video;
+    }
 }

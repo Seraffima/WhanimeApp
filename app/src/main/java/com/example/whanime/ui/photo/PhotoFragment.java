@@ -1,14 +1,16 @@
 package com.example.whanime.ui.photo;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -16,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 import com.example.whanime.R;
 import com.example.whanime.api.TraceMoeApi;
 import com.example.whanime.api.TraceMoeResponse;
@@ -32,11 +35,12 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
+// Fragmento para manejar la selección y carga de imágenes
 public class PhotoFragment extends Fragment {
 
-    private ActivityResultLauncher<Intent> pickImageLauncher;
-    private TraceMoeApi traceMoeApi;
-    private SearchViewModel searchViewModel;
+    private ActivityResultLauncher<Intent> pickImageLauncher; // Lanzador de resultados de actividad para seleccionar imágenes
+    private TraceMoeApi traceMoeApi; // API de TraceMoe
+    private SearchViewModel searchViewModel; // ViewModel para SearchItem
 
     @Nullable
     @Override
@@ -44,7 +48,6 @@ public class PhotoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_photo, container, false);
 
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-
 
         ImageButton buttonSelectImage = view.findViewById(R.id.select_image_button);
         buttonSelectImage.setOnClickListener(v -> selectImageFromGallery());
@@ -61,14 +64,21 @@ public class PhotoFragment extends Fragment {
 
         traceMoeApi = ApiClient.getClient().create(TraceMoeApi.class);
 
+        // Apply text size preference
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        int textSize = sharedPreferences.getInt("text_size", 16);
+        applyTextSize(view, textSize);
+
         return view;
     }
 
+    // Metodo para seleccionar una imagen de la galería
     private void selectImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickImageLauncher.launch(intent);
     }
 
+    // Metodo para cargar una imagen a la API
     private void uploadImageToApi(Uri imageUri) {
         try {
             InputStream inputStream = getActivity().getContentResolver().openInputStream(imageUri);
@@ -99,7 +109,6 @@ public class PhotoFragment extends Fragment {
                 @Override
                 public void onFailure(Call<TraceMoeResponse> call, Throwable t) {
                     Toast.makeText(getActivity(), "Upload error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.e("API_ERROR", t.getMessage(), t);
                 }
             });
         } catch (Exception e) {
@@ -107,6 +116,7 @@ public class PhotoFragment extends Fragment {
         }
     }
 
+    // Metodo para buscar anime con AniList usando la URL de la imagen
     private void searchAnimeWithAniList(String imageUrl) {
         traceMoeApi.searchAnimeWithAniList(imageUrl).enqueue(new Callback<TraceMoeResponse>() {
             @Override
@@ -118,10 +128,10 @@ public class PhotoFragment extends Fragment {
                         String videoUrl = result.video;
                         Toast.makeText(getActivity(), "Image uploaded: " + romajiTitle, Toast.LENGTH_SHORT).show();
 
-                        // Create a new SearchItem
+                        // Crear un nuevo SearchItem
                         SearchItem newItem = new SearchItem(result.image, romajiTitle, result.episode, videoUrl);
 
-                        // Save the new SearchItem to the database
+                        // Guardar el nuevo SearchItem en la base de datos
                         searchViewModel.insert(newItem);
                     } else {
                         Toast.makeText(getActivity(), "Anime information not found", Toast.LENGTH_SHORT).show();
@@ -134,8 +144,18 @@ public class PhotoFragment extends Fragment {
             @Override
             public void onFailure(Call<TraceMoeResponse> call, Throwable t) {
                 Toast.makeText(getActivity(), "Search error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("API_ERROR", t.getMessage(), t);
             }
         });
+    }
+
+    private void applyTextSize(View view, int textSize) {
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                applyTextSize(viewGroup.getChildAt(i), textSize);
+            }
+        } else if (view instanceof TextView) {
+            ((TextView) view).setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize);
+        }
     }
 }

@@ -13,20 +13,24 @@ import androidx.preference.PreferenceManager;
 
 import com.example.whanime.databinding.ActivityMainBinding;
 
+// Actividad principal de la aplicación
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Inflar el diseño de la actividad principal
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Configurar la barra de navegación inferior
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_search, R.id.navigation_photo, R.id.navigation_settings)
                 .build();
 
+        // Configurar el controlador de navegación
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(binding.navView, navController);
         }
 
-        // Example: Toggle dark mode based on a setting
+        // Ejemplo: Alternar el modo oscuro basado en una configuración
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isDarkModeEnabled = sharedPreferences.getBoolean("dark_mode", false);
         if (isDarkModeEnabled) {

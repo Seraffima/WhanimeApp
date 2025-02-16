@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Whanime</string>
+    <string name="app_name">Moe-vile</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -8,4 +8,18 @@
     <string name="title_user">User</string>
     <string name="image_desc">Image Description</string>
     <string name="select_image">Select Image</string>
+    <string name="main_button_help">Tap the button to select your image</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="text_size">Text Size</string>
+    <string name="select_language">Select Language</string>
+        <string name="anime_details">Anime Details</string>
+        <string name="name">Name: %1$s</string>
+        <string name="episode">Episode: %1$s</string>
+        <string name="ok">OK</string>
+
+    <string-array name="language_options">
+        <item>English</item>
+        <item>Spanish</item>
+        <!-- Add more languages as needed -->
+    </string-array>
 </resources>
